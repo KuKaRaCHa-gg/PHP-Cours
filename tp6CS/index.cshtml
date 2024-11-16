@@ -1,0 +1,57 @@
+@{
+    var queryString = Request.QueryString;
+    
+}
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Les 4 Fantastiques : Mission C#</title>
+</head>
+<body>
+    <table>
+        <!--Tabelau de formulaire-->
+        <tr>
+            <td>
+                Clé
+            </td>
+            <td>
+                Valeur
+            </td>
+        </tr>
+                @foreach (var key in queryString.AllKeys)
+        {
+            <tr>
+                <td>@key</td>
+                <td>@queryString[key]</td>
+            </tr>
+        }
+        
+    </table>
+
+    <form action="/submit_form" method="post">
+       <label>Votre nom :</label>
+       <input name="nom" id="nom" type="text" />
+       <br><br>
+
+       <label>Votre prénom :</label>
+       <input name="prenom" id="prenom" type="text" />
+       <br><br>
+
+       <input type="submit" value="Confirmer">
+    </form>
+
+    <table>
+        <tr>
+            <!-- Contenu de la table formulaire--> 
+            <td>Nom : @ViewData["Nom"]</td>
+            <td>Prénom : @ViewData["Prenom"]</td>
+        </tr>
+    </table>
+
+</body>
+</html>

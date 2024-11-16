@@ -1,0 +1,19 @@
+@{
+    var queryString = Context.Request.Query;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Query String Keys and Values</title>
+</head>
+<body>
+    <h1>Query String Keys and Values</h1>
+    <ul>
+        @foreach (var key in queryString.Keys)
+        {
+            <li>@key: @queryString[key]</li>
+        }
+    </ul>
+</body>
+</html>

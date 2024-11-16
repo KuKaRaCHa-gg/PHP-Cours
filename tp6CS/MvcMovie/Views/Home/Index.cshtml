@@ -1,0 +1,69 @@
+﻿@{
+    // Récupère la valeur de la query-string (chaîne de requête) depuis l'URL
+    var queryString = Context.Request.QueryString.Value;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chemin vers le fichier CSS pour le style de la page -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+    <title>Les 4 Fantastiques : Mission C#</title>
+</head>
+<body>
+    <h2>Tableau de la query-string</h2>
+    <table>
+        <tr>
+            <th>Clé</th> <!-- En-tête pour la colonne des clés -->
+            <th>Valeur</th> <!-- En-tête pour la colonne des valeurs -->
+        </tr>
+        @if (!string.IsNullOrEmpty(queryString)) // Vérifie si la query-string 
+        {
+            <!-- Parcourt chaque paire clé-valeur dans la query-string -->
+            foreach (var keyValue in queryString.TrimStart('?').Split('&'))
+            {
+                <!-- Sépare la clé et la valeur en utilisant le signe "=" -->
+                var key = keyValue.Split('=')[0];
+                var value = keyValue.Split('=')[1];
+                <tr>
+                    <td>@key</td> <!-- Affiche la clé dans la colonne des clés -->
+                    <td>@value</td> <!-- Affiche la valeur dans la colonne des valeurs -->
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">Aucun paramètre trouvé dans la query-string.</td> <!-- Message si la query-string est vide -->
+            </tr>
+        }
+    </table>
+
+    <h2>Formulaire de soumission</h2>
+    <form method="post" asp-action="SubmitForm"> <!-- Formulaire de soumission POST vers l'action 'SubmitForm' -->
+       <label for="nom">Votre nom :</label>
+       <input name="nom" id="nom" type="text" required /> <!-- Champ de saisie pour le nom -->
+       <br><br>
+
+       <label for="prenom">Votre prénom :</label>
+       <input name="prenom" id="prenom" type="text" required /> <!-- Champ de saisie pour le prénom -->
+       <br><br>
+
+       <input type="submit" value="Confirmer"> <!-- Bouton pour soumettre le formulaire -->
+    </form>
+
+    <h2>Tableau des données POST</h2>
+    <table>
+        <tr>
+            <th>Nom</th> <!-- En-tête pour le nom -->
+            <th>Prénom</th> <!-- En-tête pour le prénom -->
+        </tr>
+        <tr>
+            <td>@ViewData["Nom"]</td> <!-- Affiche le nom récupéré depuis les données POST -->
+            <td>@ViewData["Prenom"]</td> <!-- Affiche le prénom récupéré depuis les données POST -->
+        </tr>
+    </table>
+</body>
+</html>
