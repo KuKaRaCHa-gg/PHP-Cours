@@ -1,11 +1,6 @@
 # 📘 PHP Cours - Daniil Minevich
 This repository contains all my PHP course files and exercises for this year.
 
-## 📂 Directory Structure
-- **TP1/**: Introduction to PHP, basic syntax, and first dynamic pages.
-- **TP2/**: Forms and data validation.
-- **...**: Add descriptions for other exercises as needed.
-
 ## 🚀 Usage
 1. Clone this repository:
    ```bash
