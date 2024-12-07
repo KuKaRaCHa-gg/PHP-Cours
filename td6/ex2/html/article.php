@@ -1,94 +1,81 @@
+<?php
+require_once 'db.php'; // Connexion à la base de données
+
+// Vérifie si un ID valide est passé dans l'URL
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $id = $_GET['id'];
+
+    // Requête pour récupérer un article spécifique
+    $stmt = $pdo->prepare("SELECT * FROM articles WHERE id = :id AND statut = 'publie'");
+    $stmt->execute(['id' => $id]);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$article) {
+        die("Article non trouvé ou non publié.");
+    }
+} else {
+    die("ID d'article invalide.");
+}
+?>
+
 <!DOCTYPE HTML>
-<!--
-	Verti by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Verti by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload homepage">
-		<div id="page-wrapper">
+<html lang="fr">
+<head>
+    <title><?= htmlspecialchars($article['titre']); ?></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload homepage">
+    <div id="page-wrapper">
 
-			<!-- Header -->
-				<div id="header-wrapper">
-					<header id="header" class="container">
+        <!-- Header -->
+        <div id="header-wrapper">
+            <header id="header" class="container">
+                <!-- Logo -->
+                <div id="logo">
+                    <h1><a href="index.php">Blog</a></h1>
+                </div>
+            </header>
+        </div>
 
-						<!-- Logo -->
-							<div id="logo">
-								<h1><a href="index.html">Blog</a></h1>
-							</div>
+        <!-- Main Content -->
+        <div id="main-wrapper">
+            <div class="container">
+                <div id="content">
+                    <article>
+                        <h2><?= htmlspecialchars($article['titre']); ?></h2>
+                        <p>Publié par <?= htmlspecialchars($article['auteur']); ?> le <?= htmlspecialchars($article['date_creation']); ?></p>
+                        <p><?= nl2br(htmlspecialchars($article['contenu'])); ?></p>
+                    </article>
+                    <a href="index.php" class="button">Retour à la liste des articles</a>
+                </div>
+            </div>
+        </div>
 
+        <!-- Footer -->
+        <div id="footer-wrapper">
+            <footer id="footer" class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="copyright">
+                            <ul class="menu">
+                                <li>&copy; Untitled. All rights reserved</li>
+                                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
 
-					</header>
-				</div>
-
-				<div id="main-wrapper">
-					<div class="container">
-						<div id="content">
-				
-							<!-- Content -->
-								<article>
-				
-									<h2>No Sidebar</h2>
-				
-									<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus.
-									Praesent semper mod quis eget mi. Etiam eu ante risus. Aliquam erat volutpat.
-									Aliquam luctus et mattis lectus sit amet pulvinar. Nam turpis nisi
-									consequat etiam lorem ipsum dolor sit amet nullam.</p>
-				
-									<h3>More intriguing information</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ac quam risus, at tempus
-									justo. Sed dictum rutrum massa eu volutpat. Quisque vitae hendrerit sem. Pellentesque lorem felis,
-									ultricies a bibendum id, bibendum sit amet nisl. Mauris et lorem quam. Maecenas rutrum imperdiet
-									vulputate. Nulla quis nibh ipsum, sed egestas justo. Morbi ut ante mattis orci convallis tempor.
-									Etiam a lacus a lacus pharetra porttitor quis accumsan odio. Sed vel euismod nisi. Etiam convallis
-									rhoncus dui quis euismod. Maecenas lorem tellus, congue et condimentum ac, ullamcorper non sapien.
-									Donec sagittis massa et leo semper a scelerisque metus faucibus. Morbi congue mattis mi.
-									Phasellus sed nisl vitae risus tristique volutpat. Cras rutrum commodo luctus.</p>
-				
-									<p>Phasellus odio risus, faucibus et viverra vitae, eleifend ac purus. Praesent mattis, enim
-									quis hendrerit porttitor, sapien tortor viverra magna, sit amet rhoncus nisl lacus nec arcu.
-									Suspendisse laoreet metus ut metus imperdiet interdum aliquam justo tincidunt. Mauris dolor urna,
-									fringilla vel malesuada ac, dignissim eu mi. Praesent mollis massa ac nulla pretium pretium.
-									Maecenas tortor mauris, consectetur pellentesque dapibus eget, tincidunt vitae arcu.
-									Vestibulum purus augue, tincidunt sit amet iaculis id, porta eu purus.</p>
-				
-								</article>
-				
-						</div>
-					</div>
-				</div>
-				
-			<!-- Footer -->
-				<div id="footer-wrapper">
-					<footer id="footer" class="container">
-						<div class="row">
-							<div class="col-12">
-								<div id="copyright">
-									<ul class="menu">
-										<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</footer>
-				</div>
-
-			</div>
-
-		<!-- Scripts -->
-
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
 </html>

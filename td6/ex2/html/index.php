@@ -1,9 +1,25 @@
+<?php
+require_once 'db.php';
+
+// Vérifie si l'ID est présent dans l'URL
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    // Route vers article.php avec l'ID
+    require_once 'article.php';
+    exit;
+} else {
+    // Sinon, on affiche la liste des articles
+    $stmt = $pdo->query("SELECT id, titre, auteur, date_creation FROM articles WHERE statut = 'publie'");
+    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
 <!DOCTYPE HTML>
 <!--
 	Verti by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+
 <html>
 	<head>
 		<title>Verti by HTML5 UP</title>
@@ -13,7 +29,7 @@
 	</head>
 	<body class="is-preload homepage">
 		<div id="page-wrapper">
-
+		
 			<!-- Header -->
 				<div id="header-wrapper">
 					<header id="header" class="container">

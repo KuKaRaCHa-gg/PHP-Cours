@@ -56,4 +56,6 @@ class TaskModel {
         $stmt = $this->pdo->prepare("DELETE FROM Tache WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
+
+    
 }

@@ -28,6 +28,7 @@ switch ($action) {
     case 'delete':
         $controller->deleteTask($id);
         break;
+    
     default:
         $controller->listTasks();
 }
