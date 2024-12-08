@@ -1,182 +1,93 @@
 <?php
 require_once 'db.php';
 
-// Vérifie si l'ID est présent dans l'URL
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    // Route vers article.php avec l'ID
-    require_once 'article.php';
-    exit;
-} else {
-    // Sinon, on affiche la liste des articles
-    $stmt = $pdo->query("SELECT id, titre, auteur, date_creation FROM articles WHERE statut = 'publie'");
-    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+// Récupération des articles publiés
+$stmt = $pdo->query("SELECT id, titre, auteur, date_creation FROM articles WHERE statut = 'publie'");
+$articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Tableau d'images disponibles
+$images = [
+    "images/pic01.jpg",
+    "images/pic02.jpg",
+    "images/pic03.jpg",
+    "images/pic04.jpg",
+    "images/pic05.jpg",
+    "images/pic06.jpg",
+    "images/pic07.jpg"
+];
+
+// Compteur pour les images
+$imageIndex = 0;
 ?>
+
 <!DOCTYPE HTML>
-<!--
-	Verti by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<html lang="fr">
+<head>
+    <title>Liste des articles</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload homepage">
+    <div id="page-wrapper">
 
+        <!-- Header -->
+        <div id="header-wrapper">
+            <header id="header" class="container">
+                <div id="logo">
+                    <h1><a href="index.php">Blog</a></h1>
+                </div>
+            </header>
+        </div>
 
-<html>
-	<head>
-		<title>Verti by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload homepage">
-		<div id="page-wrapper">
-		
-			<!-- Header -->
-				<div id="header-wrapper">
-					<header id="header" class="container">
+        <!-- Features -->
+        <div id="features-wrapper">
+            <div class="container">
+                <div class="row">
+                    <?php foreach ($articles as $article): ?>
+                        <div class="col-4 col-12-medium">
+                            <section class="box feature">
+                                <!-- Utilise une image du tableau -->
+                                <a href="article.php?id=<?= $article['id']; ?>" class="image featured">
+                                    <img src="<?= $images[$imageIndex]; ?>" alt="<?= htmlspecialchars($article['titre']); ?>" />
+                                </a>
+                                <div class="inner">
+                                    <header>
+                                        <h2><?= htmlspecialchars($article['titre']); ?></h2>
+                                        <p>Par <?= htmlspecialchars($article['auteur']); ?> le <?= htmlspecialchars($article['date_creation']); ?></p>
+                                    </header>
+                                    <a href="article.php?id=<?= $article['id']; ?>" class="button">Lire l'article</a>
+                                </div>
+                            </section>
+                        </div>
+                        <?php 
+                        // Incrémente l'index pour changer d'image
+                        $imageIndex++;
+                        // Revient au début si on dépasse le nombre d'images
+                        if ($imageIndex >= count($images)) {
+                            $imageIndex = 0;
+                        }
+                        ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
 
-						<!-- Logo -->
-							<div id="logo">
-								<h1><a href="index.html">Blog</a></h1>
-							</div>
-
-
-					</header>
-				</div>
-
-			<!-- Banner -->
-				<div id="banner-wrapper">
-					<div id="banner" class="box container">
-						<div class="row">
-							<div class="col-7 col-12-medium">
-								<h2>Bienvenue sur le blog.</h2>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			<!-- Features -->
-				<div id="features-wrapper">
-					<div class="container">
-						<div class="row">
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>Put something here</h2>
-												<p>Maybe here as well I think</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>An interesting title</h2>
-												<p>This is also an interesting subtitle</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>Oh, and finally ...</h2>
-												<p>Here's another intriguing subtitle</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>Oh, and finally ...</h2>
-												<p>Here's another intriguing subtitle</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>Oh, and finally ...</h2>
-												<p>Here's another intriguing subtitle</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-							<div class="col-4 col-12-medium">
-
-								<!-- Box -->
-									<section class="box feature">
-										<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-										<div class="inner">
-											<header>
-												<h2>Oh, and finally ...</h2>
-												<p>Here's another intriguing subtitle</p>
-											</header>
-											<p>Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus. Praesent sed semper amet bibendum tristique fringilla.</p>
-										</div>
-									</section>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				
-			<!-- Footer -->
-				<div id="footer-wrapper">
-					<footer id="footer" class="container">
-						<div class="row">
-							<div class="col-12">
-								<div id="copyright">
-									<ul class="menu">
-										<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</footer>
-				</div>
-
-			</div>
-
-		<!-- Scripts -->
-
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+        <!-- Footer -->
+        <div id="footer-wrapper">
+            <footer id="footer" class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="copyright">
+                            <ul class="menu">
+                                <li>&copy; Untitled. All rights reserved</li>
+                                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
 </html>
